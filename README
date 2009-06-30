@@ -1,0 +1,66 @@
+ObjectiveStack
+A Rails template from Objective 3
+Author: Blake Watters <blake@objective3.com>
+
+This package provides a set of Rails plugins, gems, and other bits codifying the
+Objective 3 way of building Rails applications. The stack focuses on BDD, rapid 
+prototyping, high code coverage, elegant markup, and a solid foundation for 
+monitoring and instrumenting the application.
+
+Installation:
+You can install the latest version of ObjectiveStack 
+
+Included Gems:
+rspec
+rspec-rails
+cucumber
+webrate
+bmabey-email_spec
+spicycode-rcov
+bcrypt-ruby
+configatron
+authlogic
+thoughtbot-factory_girl
+mislav-will_paginate
+haml
+giraffesoft-resource_controller
+alexdunae-validates_email_format_of
+nokogiri
+paperclip
+fiveruns_manage
+
+Included Plugins:
+active_record_tableless
+custom-err-msg
+activemerchant
+haml
+seed-fu
+acts_as_url_param
+nulldb
+ssl_requirement
+rails_money
+
+Javascript:
+JQuery is bundled in the stack instead of Prototype/Scriptaculous.
+
+RCov Coverage Enforcement:
+Provides an RCov rake task to enforce 95.0% code coverage for specs and 95.0%
+code coverage for Cucumber stories.
+
+Misc
+    * password and password_confirmation are set up to be filtered
+    * there is a default application layout file
+    * a page title helper has been added
+    * index.html is already deleted
+    * rails.png is already deleted
+
+Recommended Extras:
+
+Search:
+We strongly recommend the use of Sphinx as a searching solution for your Rails
+apps. We further strongly recommend the excellent Thinking Sphinx plugin from
+Pat Allen to provide the Rails infrastructure for your search needs. It is an
+excellent plugin and outshines the other solutions we have evaluated.
+
+Javascript Testing:
+TBA
