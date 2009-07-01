@@ -5,7 +5,8 @@ Author: Blake Watters <blake@objective3.com>
 This package provides a set of Rails plugins, gems, and other bits codifying the
 Objective 3 way of building Rails applications. The stack focuses on BDD, rapid 
 prototyping, high code coverage, elegant markup, and a solid foundation for 
-monitoring and instrumenting the application.
+monitoring and instrumenting the application. The stack also assumes that you
+are using Git for source control.
 
 Installation:
 You can install the latest version of ObjectiveStack 
@@ -16,8 +17,9 @@ rspec-rails
 cucumber
 webrate
 bmabey-email_spec
-spicycode-rcov
+relevance-rcov
 bcrypt-ruby
+rubyist-aasm
 configatron
 authlogic
 thoughtbot-factory_girl
@@ -27,14 +29,13 @@ giraffesoft-resource_controller
 alexdunae-validates_email_format_of
 nokogiri
 paperclip
-fiveruns_manage
+tobi-delayed_job
+activemerchant
+seed-fu
 
 Included Plugins:
 active_record_tableless
 custom-err-msg
-activemerchant
-haml
-seed-fu
 acts_as_url_param
 nulldb
 ssl_requirement
