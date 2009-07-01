@@ -14,7 +14,7 @@ gem "webrat", :lib => false, :version => "0.4.4", :env => :test
 gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.2.0", :env => :test
 gem "relevance-rcov", :lib => "rcov", :version => '0.8.3.4', :env => :test
 gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
-gem "mbleigh-seed-fu", :version => '1.0.0'
+gem "mbleigh-seed-fu", :version => '1.0.0', :lib => false
 
 ## Install Plugins
 plugin 'active_record_tableless', :git => 'git://github.com/robinsp/active_record_tableless.git'
@@ -58,8 +58,8 @@ rake 'gems:install', :sudo => true
 
 ## Generators
 # TODO - Generate AuthLogic shit
-generate 'haml'
 generate 'rspec'
+generate 'haml'
 
 ## Rakefiles
 # cucumber.rake
@@ -181,6 +181,9 @@ public/attachments/*
 public/system
 END
 
+# TODO-WTF - Why does the second generation of RSpec work?!?
+generate 'rspec'
+
 # Initialize the project
 unless File.exists?("#{root}/.git")
   git :init
@@ -189,10 +192,10 @@ end
 # Configure Git
 git :config => "branch.master.remote 'origin'"
 git :config => "branch.master.merge 'refs/heads/master'"
-git :config => "git config push.default current"
+git :config => "push.default current"
 
 # Add all files to git
 git :add => '.'
-if yes?('Commit changes to Git?')
+if yes?('Commit changes to Git? (y/n)')
   git :commit => "-a -m 'Initial commit of new Objective Stack based application...'"
 end
