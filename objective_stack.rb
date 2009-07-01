@@ -186,9 +186,10 @@ unless File.exists?("#{root}/.git")
   git :init
 end
 
-# Configure Git origin
+# Configure Git
 git :config => "branch.master.remote 'origin'"
 git :config => "branch.master.merge 'refs/heads/master'"
+git :config => "git config push.default current"
 
 # Add all files to git
 git :add => '.'
