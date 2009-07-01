@@ -13,7 +13,7 @@ gem "cucumber", :lib => false, :version => "0.3.11", :env => :test
 gem "webrat", :lib => false, :version => "0.4.4", :env => :test
 gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.2.0", :env => :test
 gem "relevance-rcov", :lib => "rcov", :version => '0.8.3.4', :env => :test
-gem "activemerchant", :version => '1.4.2'
+gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
 gem "mbleigh-seed-fu", :version => '1.0.0'
 
 ## Install Plugins
@@ -180,10 +180,16 @@ db/*.sqlite3
 public/attachments/*
 public/system
 END
+
 # Initialize the project
 unless File.exists?("#{root}/.git")
   git :init
 end
+
+# Configure Git origin
+git :config => "branch.master.remote 'origin'"
+git :config => "branch.master.merge 'refs/heads/master'"
+
 # Add all files to git
 git :add => '.'
 if yes?('Commit changes to Git?')
