@@ -140,8 +140,18 @@ task :default => ['spec:rcov:verify', 'features:rcov:verify']
 CODE
 
 ## config/environments/test.rb
-# Require ruby-debug inside test.rb environment
 # Initialize Active Merchant inside test.rb environment
+append_file 'config/environments/test.rb', <<-CODE
+
+require 'ruby-debug'
+
+# Initialize Active Merchant
+config.after_initialize do
+  ActiveMerchant::Billing::Base.mode = :test
+  ::GATEWAY = ActiveMerchant::Billing::BogusGateway.new
+end
+
+CODE
 
 ## spec/spec_helper.rb
 # TODO - Lots of shit to add here...
