@@ -15,6 +15,17 @@ gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.2.0", :env => :tes
 gem "relevance-rcov", :lib => "rcov", :version => '0.8.3.4', :env => :test
 gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
 gem "mbleigh-seed-fu", :version => '1.0.0', :lib => false
+gem 'rubyist-aasm', :version => '2.0.5', :source => "http://gems.github.com", :lib => 'aasm'
+gem "bcrypt-ruby", :version => '2.0.5', :lib => 'bcrypt'
+gem "configatron", :version => '2.3.2'
+gem "authlogic", :version => '2.1.0'
+gem "thoughtbot-factory_girl", :version => '1.2.1', :lib => "factory_girl", :source => "http://gems.github.com"
+gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
+gem 'haml', :version => '2.0.9'
+gem 'giraffesoft-resource_controller', :version => "0.6.5", :source => 'http://gems.github.com', :lib => 'resource_controller'
+gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
+gem 'nokogiri', :version => '1.3.2'
+gem 'paperclip', :version => '2.1.2'
 
 ## Install Plugins
 plugin 'active_record_tableless', :git => 'git://github.com/robinsp/active_record_tableless.git'
@@ -56,10 +67,25 @@ CODE
 ## Install Gems
 rake 'gems:install', :sudo => true
 
+## config/environments/test.rb
+append_file 'config/environments/test.rb', <<-CODE
+
+require 'ruby-debug'
+
+# Initialize Active Merchant
+config.after_initialize do
+  ActiveMerchant::Billing::Base.mode = :test
+  ::GATEWAY = ActiveMerchant::Billing::BogusGateway.new
+end
+
+CODE
+
 ## Generators
 # TODO - Generate AuthLogic shit
-generate 'rspec'
+FileUtils.mkdir_p("#{root}/lib/tasks") unless File.exists?("#{root}/lib/tasks")
 generate 'haml'
+generate 'rspec'
+generate 'cucumber'
 
 ## Rakefiles
 # cucumber.rake
@@ -139,22 +165,172 @@ task :default => ['spec:rcov:verify', 'features:rcov:verify']
 
 CODE
 
-## config/environments/test.rb
-# Initialize Active Merchant inside test.rb environment
-append_file 'config/environments/test.rb', <<-CODE
-
-require 'ruby-debug'
-
-# Initialize Active Merchant
-config.after_initialize do
-  ActiveMerchant::Billing::Base.mode = :test
-  ::GATEWAY = ActiveMerchant::Billing::BogusGateway.new
-end
+# rcov.opts
+file 'spec/rcov.opts', <<-CODE
+--exclude "spec/*,gems/*,features/*" 
+--rails
+--sort coverage
+--only-uncovered
 
 CODE
 
+## Generate objective_spec
+generate 'objective_spec'
+file 'spec/spec_helpers/controller.rb', <<-CODE
+module ControllerSpecHelper
+  
+  def enable_ssl
+    request.env['HTTPS'] = 'on'
+  end
+  
+  def disable_ssl
+    request.env['HTTPS'] = 'off'
+  end
+  
+  def with_ssl
+    old_https = @request.env['HTTPS']
+    begin
+      request.env['HTTPS'] = 'on'
+      yield
+    ensure
+      request.env['HTTPS'] = old_https
+    end
+  end
+  
+end
+
+CODE
+  
+file 'spec/spec_helpers/view.rb', <<-CODE
+module ViewSpecHelper
+  
+  def page_title
+    assigns[:content_for_page_title]
+  end
+  
+  def stub_authentication_logged_in!
+    template.stub!(:logged_in?).and_return(true)
+    activate_authlogic
+    @user = Factory(:user)
+    UserSession.create(@user)
+    template.stub!(:current_user).and_return(@user)
+  end
+  
+  # Authenticate the Spec harness
+  def stub_current_user!
+    @user = Factory.build(:user, :admin => false)
+    template.stub!(:current_user).and_return(@user)
+    @user
+  end
+  
+  def stub_admin_user!
+    @user = Factory.build(:user, :admin => true)
+    template.stub!(:current_user).and_return(@user)
+    @user    
+  end
+  
+  def content_for(name)
+    response.template.instance_variable_get("@content_for_\#{name}")
+  end
+  
+end
+CODE
+
+file 'spec/spec_helpers/common.rb', <<-CODE
+module CommonSpecHelper
+  
+  def will_paginate_collection(*collection)
+    WillPaginate::Collection.create(1, 10, collection.size) do |pager|
+      pager.replace(collection.flatten)
+    end
+  end
+  
+  def whitelisted_mock_classes
+    [Paperclip::Attachment]
+  end
+  
+  def mock_model(model_class, options_and_stubs = {}, &block)
+    if whitelisted_mock_classes.include?(model_class)
+      super
+    else
+      raise "mock_model is not allowed for \#{model_class} objects! Use a Factory!"
+    end
+  end
+  
+  def stub_model(model_class, stubs={})
+    if whitelisted_mock_classes.include?(model_class)
+      super
+    else
+      raise "stub_model is not allowed for \#{model_class} objects! Use a Factory!"
+    end
+  end
+  
+  def save_response(path = "\#{RAILS_ROOT}/response.body")
+    puts "Saving response body to \#{path}"
+    File.open(path, 'w+') {|f| f << response.body}
+  end
+  
+end
+CODE
+
 ## spec/spec_helper.rb
-# TODO - Lots of shit to add here...
+run "touch spec/factories.rb"
+file 'spec/spec_helper.rb', <<-CODE
+# This file is copied to ~/spec when you run 'ruby script/generate rspec'
+# from the project root directory.
+ENV["RAILS_ENV"] = "test"
+require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
+require 'spec'
+require 'spec/rails'
+
+# Load the Objective Spec framework
+require 'objective_spec'
+
+# Load additional helpers
+require 'authlogic/test_case'
+require 'factory_girl'
+require 'nokogiri'
+require 'nulldb_rspec'
+
+# Load the Factory Girl global factories
+require File.join(Rails.root, 'spec', 'factories')
+
+# Load up the Email Spec helpers
+require "email_spec/helpers"
+require "email_spec/matchers"
+
+# Expose a shared behaviour for disconnecting specs
+unless defined?(Disconnected)
+  share_as :Disconnected do
+    include NullDB::RSpec::NullifiedDatabase
+  end
+end
+
+Spec::Runner.configure do |config|
+  config.use_transactional_fixtures = true
+  config.use_instantiated_fixtures  = false
+  config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
+  
+  config.include(Authlogic::TestCase)
+  
+  # Work around problem with generated spec's being annoyed at the URL Rewriter...
+  config.include(ActionController::UrlWriter, :type => :view)
+  config.include(ViewSpecHelper, :type => :view)
+  config.include(ControllerSpecHelper, :type => :controller)
+  
+  # TODO - Encapsulate into objective_spec/mailer.rb
+  config.include(EmailSpec::Helpers, :type => :mailer)
+  config.include(EmailSpec::Matchers, :type => :mailer)
+  config.include(ActionController::UrlWriter, :type => :mailer)
+  
+  # Disconnect all specs except for Model and Controller
+  config.include(Disconnected, :type => :helper)
+  config.include(Disconnected, :type => :mailer)
+  config.include(Disconnected, :type => :view)
+  
+  config.include(CommonSpecHelper)  
+end
+CODE
 
 ## Helpers
 # TODO - Use plugins for this shit?
@@ -182,6 +358,12 @@ end
 END
 
 ## Git Incantations
+inside('coverage/specs') do
+  run "echo '*' > .gitignore"
+end
+inside('coverage/features') do
+  run "echo '*' > .gitignore"
+end
 run "touch tmp/.gitignore tmp/cache/.gitignore tmp/pids/.gitignore"
 run "touch tmp/sessions/.gitignore tmp/sockets/.gitignore log/.gitignore vendor/.gitignore"
 file '.gitignore', <<-END
@@ -202,9 +384,6 @@ db/*.sqlite3
 public/attachments/*
 public/system
 END
-
-# TODO-WTF - Why does the second generation of RSpec work?!?
-generate 'rspec'
 
 # Initialize the project
 unless File.exists?("#{root}/.git")
