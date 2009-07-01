@@ -119,7 +119,6 @@ end
 TASK
 
 ## Rewrite Rakefile to run spec:rcov and features:rcov
-run 'rm Rakefile'
 file 'Rakefile', <<-CODE
 # Add your own tasks in files placed in lib/tasks ending in .rake,
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
@@ -156,8 +155,21 @@ CODE
 # Create skeleton layouts/application.html.haml
 
 ## Controllers
-# TODO - Use plugins for this shit?
-# Filter out password and password_confirmation in application_controller.rb
+file 'app/controllers/application_controller.rb', <<-END
+# Filters added to this controller apply to all controllers in the application.
+# Likewise, all the methods added will be available for all controllers.
+
+class ApplicationController < ActionController::Base
+  include SslRequirement
+  
+  helper :all # include all helpers, all the time
+  protect_from_forgery # See ActionController::RequestForgeryProtection for details
+
+  # Scrub sensitive parameters from your log
+  filter_parameter_logging :password, :password_confirmation, :card_number, :card_verification
+end
+
+END
 
 ## Git Incantations
 run "touch tmp/.gitignore tmp/cache/.gitignore tmp/pids/.gitignore"
