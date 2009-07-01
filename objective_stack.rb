@@ -31,7 +31,7 @@ gem 'paperclip', :version => '2.1.2'
 plugin 'active_record_tableless', :git => 'git://github.com/robinsp/active_record_tableless.git'
 plugin 'custom-err-msg', :git => 'git://github.com/gumayunov/custom-err-msg.git'
 plugin 'acts_as_url_param', :git => 'git://github.com/caring/acts_as_url_param.git'
-plugin 'nulldb', :git => 'git://github.com/avdi/nulldb.git'
+plugin 'nulldb', :git => 'git://github.com/Objective3/nulldb.git'
 plugin 'ssl_requirement', :git => 'git://github.com/rails/ssl_requirement.git'
 plugin 'rails_money', :git => 'git://github.com/jerrett/rails_money.git'
 
