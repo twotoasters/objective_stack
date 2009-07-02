@@ -109,7 +109,7 @@ begin
 
     Cucumber::Rake::Task.new(:rcov) do |t|    
       t.rcov = true
-      t.rcov_opts = IO.readlines("#{RAILS_ROOT}/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
+      t.rcov_opts = IO.readlines("\#{RAILS_ROOT}/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
       t.rcov_opts << %[-o "coverage/features"]
     end
 
