@@ -551,7 +551,7 @@ end
 inside('coverage/features') do
   run "echo '*' > .gitignore"
 end
-run "touch tmp/.gitignore tmp/cache/.gitignore tmp/pids/.gitignore"
+run "touch tmp/.gitignore tmp/cache/.gitignore tmp/pids/.gitignore spec/matchers/.gitignore"
 run "touch tmp/sessions/.gitignore tmp/sockets/.gitignore log/.gitignore vendor/.gitignore"
 file '.gitignore', <<-END
 .DS_Store
