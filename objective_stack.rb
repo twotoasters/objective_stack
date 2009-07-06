@@ -21,7 +21,7 @@ gem "configatron", :version => '2.3.2'
 gem "authlogic", :version => '2.1.0'
 gem "thoughtbot-factory_girl", :version => '1.2.1', :lib => "factory_girl", :source => "http://gems.github.com"
 gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
-gem 'haml', :version => '2.0.9'
+gem 'haml', :version => '2.2.0'
 gem 'giraffesoft-resource_controller', :version => "0.6.5", :source => 'http://gems.github.com', :lib => 'resource_controller'
 gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
 gem 'nokogiri', :version => '1.3.2'
