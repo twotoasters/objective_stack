@@ -13,6 +13,7 @@ gem "cucumber", :lib => false, :version => "0.3.11", :env => :test
 gem "webrat", :lib => false, :version => "0.4.4", :env => :test
 gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.2.0", :env => :test
 gem "relevance-rcov", :lib => "rcov", :version => '0.8.3.4', :env => :test
+gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '2.10.1', :env => :test
 gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
 gem 'rubyist-aasm', :version => '2.0.5', :source => "http://gems.github.com", :lib => 'aasm'
 gem "bcrypt-ruby", :version => '2.0.5', :lib => 'bcrypt'
