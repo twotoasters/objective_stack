@@ -14,18 +14,18 @@ gem "webrat", :lib => false, :version => "0.4.4", :env => :test
 gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.2.0", :env => :test
 gem "relevance-rcov", :lib => "rcov", :version => '0.8.3.4', :env => :test
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '2.10.1', :env => :test
-gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
+gem "authlogic", :version => '2.1.1'
 gem 'rubyist-aasm', :version => '2.0.5', :source => "http://gems.github.com", :lib => 'aasm'
 gem "bcrypt-ruby", :version => '2.0.5', :lib => 'bcrypt'
 gem "configatron", :version => '2.3.2'
-gem "authlogic", :version => '2.1.0'
 gem "thoughtbot-factory_girl", :version => '1.2.1', :lib => "factory_girl", :source => "http://gems.github.com"
 gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
 gem 'haml', :version => '2.2.0'
-gem 'giraffesoft-resource_controller', :version => "0.6.5", :source => 'http://gems.github.com', :lib => 'resource_controller'
 gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
 gem 'nokogiri', :version => '1.3.2'
 gem 'paperclip', :version => '2.1.2'
+gem 'giraffesoft-resource_controller', :version => "0.6.5", :source => 'http://gems.github.com', :lib => 'resource_controller'
+gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
 
 ## Install Plugins
 plugin 'active_record_tableless', :git => 'git://github.com/robinsp/active_record_tableless.git'
