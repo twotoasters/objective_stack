@@ -107,17 +107,20 @@ begin
     Cucumber::Rake::Task.new(:all) do |t|
       t.cucumber_opts = "--format pretty"
     end
+    
+    begin
+      Cucumber::Rake::Task.new(:rcov) do |t|    
+        t.rcov = true
+        t.rcov_opts = IO.readlines("\#{RAILS_ROOT}/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
+        t.rcov_opts << %[-o "coverage/features"]
+      end
 
-    Cucumber::Rake::Task.new(:rcov) do |t|    
-      t.rcov = true
-      t.rcov_opts = IO.readlines("\#{RAILS_ROOT}/spec/rcov.opts").map {|l| l.chomp.split " "}.flatten
-      t.rcov_opts << %[-o "coverage/features"]
+      RCov::VerifyTask.new('rcov:verify' => 'features:rcov') do |t| 
+        t.threshold = 95.0
+        t.index_html = 'coverage/features/index.html'
+       end
+    rescue
     end
-
-    RCov::VerifyTask.new('rcov:verify' => 'features:rcov') do |t| 
-      t.threshold = 95.0
-      t.index_html = 'coverage/features/index.html'
-     end
    end
 rescue LoadError
   desc 'Cucumber rake task not available'
