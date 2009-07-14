@@ -23,7 +23,7 @@ gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :sour
 gem 'haml', :version => '2.2.0'
 gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
 gem 'nokogiri', :version => '1.3.2'
-gem 'paperclip', :version => '2.1.2'
+gem 'thoughtbot-paperclip', :version => '2.2.9.2', :source => 'http://gems.github.com', :lib => 'paperclip'
 gem 'giraffesoft-resource_controller', :version => "0.6.5", :source => 'http://gems.github.com', :lib => 'resource_controller'
 gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
 

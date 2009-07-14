@@ -55,13 +55,16 @@ Misc
     * index.html is already deleted
     * rails.png is already deleted
 
-Recommended Extras:
+Recommended Optional Extras:
 
 Search:
 We strongly recommend the use of Sphinx as a searching solution for your Rails
 apps. We further strongly recommend the excellent Thinking Sphinx plugin from
 Pat Allen to provide the Rails infrastructure for your search needs. It is an
 excellent plugin and outshines the other solutions we have evaluated.
+
+Tagging:
+Acts as Taggable On
 
 Javascript Testing:
 TBA
