@@ -464,6 +464,13 @@ module CommonSpecHelper
 end
 CODE
 
+append_file 'spec/spec_helpers/shared_examples.rb', <<-CODE
+# Expose a shared behaviour for disconnecting specs
+share_as :Disconnected do
+  include NullDB::RSpec::NullifiedDatabase
+end
+CODE
+
 ## spec/spec_helper.rb
 run "touch spec/factories.rb"
 file 'spec/spec_helper.rb', <<-CODE
@@ -489,13 +496,6 @@ require File.join(Rails.root, 'spec', 'factories')
 # Load up the Email Spec helpers
 require "email_spec/helpers"
 require "email_spec/matchers"
-
-# Expose a shared behaviour for disconnecting specs
-unless defined?(Disconnected)
-  share_as :Disconnected do
-    include NullDB::RSpec::NullifiedDatabase
-  end
-end
 
 Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
