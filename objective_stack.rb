@@ -524,6 +524,14 @@ Spec::Runner.configure do |config|
 end
 CODE
 
+file 'spec/spec.opts', <<-CODE
+--colour
+--format progress
+--loadby mtime
+--reverse
+
+CODE
+
 ## Helpers
 # TODO - Use plugins for this shit?
 # Install page_title_helper.rb
