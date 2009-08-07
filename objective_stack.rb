@@ -24,7 +24,6 @@ gem 'haml', :version => '2.2.0'
 gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
 gem 'nokogiri', :version => '1.3.2'
 gem 'thoughtbot-paperclip', :version => '2.2.9.2', :source => 'http://gems.github.com', :lib => 'paperclip'
-gem 'giraffesoft-resource_controller', :version => "0.6.5", :source => 'http://gems.github.com', :lib => 'resource_controller'
 gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
 
 ## Install Plugins
@@ -36,6 +35,7 @@ plugin 'ssl_requirement', :git => 'git://github.com/rails/ssl_requirement.git'
 plugin 'rails_money', :git => 'git://github.com/jerrett/rails_money.git'
 plugin 'seed-fu', :git => 'git://github.com/mbleigh/seed-fu.git'
 plugin 'default_value_for', :git => 'git://github.com/FooBarWidget/default_value_for.git'
+plugin 'resource_controller', :git => 'git://github.com/giraffesoft/resource_controller.git -r deep_nesting'
 
 ## Cleanup boilerplate messiness
 run 'rm public/index.html'
