@@ -22,7 +22,7 @@ gem "thoughtbot-factory_girl", :version => '1.2.1', :lib => "factory_girl", :sou
 gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
 gem 'haml', :version => '2.2.0'
 gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
-gem 'nokogiri', :version => '1.3.2'
+gem 'nokogiri', :version => '1.3.3'
 gem 'thoughtbot-paperclip', :version => '2.2.9.2', :source => 'http://gems.github.com', :lib => 'paperclip'
 gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
 
