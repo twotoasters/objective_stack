@@ -40,6 +40,7 @@ acts_as_url_param
 nulldb
 ssl_requirement
 rails_money
+default_value_for
 
 Javascript:
 JQuery is bundled in the stack instead of Prototype/Scriptaculous.

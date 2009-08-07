@@ -7,9 +7,9 @@
 
 ## Install Gems
 # RSpec & Cucumber
-gem "rspec", :lib => false, :version => "1.2.7", :env => :test
+gem "rspec", :lib => false, :version => "1.2.8", :env => :test
 gem "rspec-rails", :lib => false, :version => "1.2.7.1", :env => :test
-gem "cucumber", :lib => false, :version => "0.3.11", :env => :test
+gem "cucumber", :lib => false, :version => "0.3.94", :env => :test
 gem "webrat", :lib => false, :version => "0.4.4", :env => :test
 gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.2.0", :env => :test
 gem "relevance-rcov", :lib => "rcov", :version => '0.8.3.4', :env => :test
@@ -35,6 +35,7 @@ plugin 'nulldb', :git => 'git://github.com/Objective3/nulldb.git'
 plugin 'ssl_requirement', :git => 'git://github.com/rails/ssl_requirement.git'
 plugin 'rails_money', :git => 'git://github.com/jerrett/rails_money.git'
 plugin 'seed-fu', :git => 'git://github.com/mbleigh/seed-fu.git'
+plugin 'default_value_for', :git => 'git://github.com/FooBarWidget/default_value_for.git'
 
 ## Cleanup boilerplate messiness
 run 'rm public/index.html'
