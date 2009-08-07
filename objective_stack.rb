@@ -12,7 +12,7 @@ gem "rspec-rails", :lib => false, :version => "1.2.7.1", :env => :test
 gem "cucumber", :lib => false, :version => "0.3.94", :env => :test
 gem "webrat", :lib => false, :version => "0.4.4", :env => :test
 gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.2.0", :env => :test
-gem "relevance-rcov", :lib => "rcov", :version => '0.8.3.4', :env => :test
+gem "relevance-rcov", :lib => "rcov", :version => '0.8.5.1', :env => :test
 gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '2.10.1', :env => :test
 gem "authlogic", :version => '2.1.1'
 gem 'rubyist-aasm', :version => '2.0.5', :source => "http://gems.github.com", :lib => 'aasm'
