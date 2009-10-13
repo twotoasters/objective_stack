@@ -7,23 +7,23 @@
 
 ## Install Gems
 # RSpec & Cucumber
-gem "rspec", :lib => false, :version => "1.2.8", :env => :test
-gem "rspec-rails", :lib => false, :version => "1.2.7.1", :env => :test
-gem "cucumber", :lib => false, :version => "0.3.94", :env => :test
-gem "webrat", :lib => false, :version => "0.4.4", :env => :test
-gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.2.0", :env => :test
-gem "relevance-rcov", :lib => "rcov", :version => '0.8.5.1', :env => :test
-gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '2.10.1', :env => :test
-gem "authlogic", :version => '2.1.1'
-gem 'rubyist-aasm', :version => '2.0.5', :source => "http://gems.github.com", :lib => 'aasm'
-gem "bcrypt-ruby", :version => '2.0.5', :lib => 'bcrypt'
-gem "configatron", :version => '2.3.2'
-gem "thoughtbot-factory_girl", :version => '1.2.1', :lib => "factory_girl", :source => "http://gems.github.com"
+gem "rspec", :lib => false, :version => "1.2.9", :env => :test
+gem "rspec-rails", :lib => false, :version => "1.2.9", :env => :test
+gem "cucumber", :lib => false, :version => "0.3.104", :env => :test
+gem "webrat", :lib => false, :version => "0.5.3", :env => :test
+gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.3.4", :env => :test
+gem "relevance-rcov", :lib => "rcov", :version => '0.9.2.1', :env => :test
+gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '2.10.2', :env => :test
+gem "authlogic", :version => '2.1.2'
+gem 'rubyist-aasm', :version => '2.1.1', :source => "http://gems.github.com", :lib => 'aasm'
+gem "bcrypt-ruby", :version => '2.1.2', :lib => 'bcrypt'
+gem "configatron", :version => '2.5.1'
+gem "thoughtbot-factory_girl", :version => '1.2.2', :lib => "factory_girl", :source => "http://gems.github.com"
 gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
-gem 'haml', :version => '2.2.0'
+gem 'haml', :version => '2.2.6'
 gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
 gem 'nokogiri', :version => '1.3.3'
-gem 'thoughtbot-paperclip', :version => '2.2.9.2', :source => 'http://gems.github.com', :lib => 'paperclip'
+gem 'thoughtbot-paperclip', :version => '2.3.1', :source => 'http://gems.github.com', :lib => 'paperclip'
 gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
 
 ## Install Plugins
@@ -269,13 +269,14 @@ namespace :spec do
     ::STATS_DIRECTORIES << %w(Helper\ specs spec/helpers) if File.exist?('spec/helpers')
     ::STATS_DIRECTORIES << %w(Library\ specs spec/lib) if File.exist?('spec/lib')
     ::STATS_DIRECTORIES << %w(Routing\ specs spec/lib) if File.exist?('spec/routing')
+    ::STATS_DIRECTORIES << %w(Integration\ specs spec/integration) if File.exist?('spec/integration')
     ::CodeStatistics::TEST_TYPES << "Model specs" if File.exist?('spec/models')
     ::CodeStatistics::TEST_TYPES << "View specs" if File.exist?('spec/views')
     ::CodeStatistics::TEST_TYPES << "Controller specs" if File.exist?('spec/controllers')
     ::CodeStatistics::TEST_TYPES << "Helper specs" if File.exist?('spec/helpers')
     ::CodeStatistics::TEST_TYPES << "Library specs" if File.exist?('spec/lib')
     ::CodeStatistics::TEST_TYPES << "Routing specs" if File.exist?('spec/routing')
-    ::STATS_DIRECTORIES.delete_if {|a| a[0] =~ /test/}
+    ::CodeStatistics::TEST_TYPES << "Integration specs" if File.exist?('spec/integration')
   end
 
   namespace :db do
@@ -290,44 +291,6 @@ namespace :spec do
         (ENV['FIXTURES'] ? ENV['FIXTURES'].split(/,/).map {|f| File.join(fixtures_dir, f) } : Dir.glob(File.join(fixtures_dir, '*.{yml,csv}'))).each do |fixture_file|
           Fixtures.create_fixtures(File.dirname(fixture_file), File.basename(fixture_file, '.*'))
         end
-      end
-    end
-  end
-
-  namespace :server do
-    daemonized_server_pid = File.expand_path("\#{RAILS_ROOT}/tmp/pids/spec_server.pid")
-    
-    desc "start spec_server."
-    task :start do
-      if File.exist?(daemonized_server_pid)
-        $stderr.puts "spec_server is already running."
-      else
-        $stderr.puts %Q{Starting up spec_server ...}
-        FileUtils.mkdir_p('tmp/pids') unless test ?d, 'tmp/pids'
-        system("ruby", "script/spec_server", "--daemon", "--pid", daemonized_server_pid)
-      end
-    end
-
-    desc "stop spec_server."
-    task :stop do
-      unless File.exist?(daemonized_server_pid)
-        $stderr.puts "No server running."
-      else
-        $stderr.puts "Shutting down spec_server ..."
-        system("kill", "-s", "TERM", File.read(daemonized_server_pid).strip) && 
-        File.delete(daemonized_server_pid)
-      end
-    end
-
-    desc "restart spec_server."
-    task :restart => [:stop, :start]
-    
-    desc "check if spec server is running"
-    task :status do
-      if File.exist?(daemonized_server_pid)
-        $stderr.puts %Q{spec_server is running (PID: \#{File.read(daemonized_server_pid).gsub("\n","")})}
-      else
-        $stderr.puts "No server running."
       end
     end
   end
@@ -359,7 +322,7 @@ CODE
 
 # rcov.opts
 file 'spec/rcov.opts', <<-CODE
---exclude "spec/*,gems/*,features/*" 
+--exclude "spec/*,gems/*,spec/spec_helper/*"
 --rails
 --sort coverage
 --only-uncovered
@@ -368,7 +331,7 @@ CODE
 
 ## Generate objective_spec
 generate 'objective_spec'
-file 'spec/spec_helpers/controller.rb', <<-CODE
+file 'spec/support/controller_spec_helper.rb', <<-CODE
 module ControllerSpecHelper
   
   def enable_ssl
@@ -393,7 +356,7 @@ end
 
 CODE
   
-file 'spec/spec_helpers/view.rb', <<-CODE
+file 'spec/support/view_spec_helper.rb', <<-CODE
 module ViewSpecHelper
   
   def page_title
@@ -428,7 +391,7 @@ module ViewSpecHelper
 end
 CODE
 
-file 'spec/spec_helpers/common.rb', <<-CODE
+file 'spec/support/common_spec_helper.rb', <<-CODE
 module CommonSpecHelper
   
   def will_paginate_collection(*collection)
@@ -465,7 +428,7 @@ module CommonSpecHelper
 end
 CODE
 
-append_file 'spec/spec_helpers/shared_examples.rb', <<-CODE
+append_file 'spec/support/shared_examples.rb', <<-CODE
 # Expose a shared behaviour for disconnecting specs
 share_as :Disconnected do
   include NullDB::RSpec::NullifiedDatabase
@@ -477,10 +440,13 @@ run "touch spec/factories.rb"
 file 'spec/spec_helper.rb', <<-CODE
 # This file is copied to ~/spec when you run 'ruby script/generate rspec'
 # from the project root directory.
-ENV["RAILS_ENV"] = "test"
-require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
-require 'spec'
+ENV["RAILS_ENV"] ||= 'test'
+require File.expand_path(File.join(File.dirname(__FILE__),'..','config','environment'))
+require 'spec/autorun'
 require 'spec/rails'
+
+# Uncomment the next line to use webrat's matchers
+# require 'webrat/integrations/rspec-rails'
 
 # Load the Objective Spec framework
 require 'objective_spec'
@@ -497,6 +463,10 @@ require File.join(Rails.root, 'spec', 'factories')
 # Load up the Email Spec helpers
 require "email_spec/helpers"
 require "email_spec/matchers"
+
+# Requires supporting files with custom matchers and macros, etc,
+# in ./support/ and its subdirectories.
+Dir[File.expand_path(File.join(File.dirname(__FILE__),'support','**','*.rb'))].each {|f| require f}
 
 Spec::Runner.configure do |config|
   config.use_transactional_fixtures = true
