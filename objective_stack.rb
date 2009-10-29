@@ -9,21 +9,21 @@
 # RSpec & Cucumber
 gem "rspec", :lib => false, :version => "1.2.9", :env => :test
 gem "rspec-rails", :lib => false, :version => "1.2.9", :env => :test
-gem "cucumber", :lib => false, :version => "0.3.104", :env => :test
+gem "cucumber", :lib => false, :version => "0.4.3", :env => :test
 gem "webrat", :lib => false, :version => "0.5.3", :env => :test
-gem 'bmabey-email_spec', :lib => 'email_spec', :version => "0.3.4", :env => :test
-gem "relevance-rcov", :lib => "rcov", :version => '0.9.2.1', :env => :test
-gem 'thoughtbot-shoulda', :lib => 'shoulda', :version => '2.10.2', :env => :test
+gem 'email_spec', :lib => 'email_spec', :version => "0.3.5", :env => :test
+gem "rcov", :lib => "rcov", :version => '0.9.6', :env => :test
+gem 'shoulda', :lib => 'shoulda', :version => '2.10.2', :env => :test
 gem "authlogic", :version => '2.1.2'
-gem 'rubyist-aasm', :version => '2.1.1', :source => "http://gems.github.com", :lib => 'aasm'
+gem 'aasm', :version => '2.1.3', :source => "http://gems.github.com", :lib => 'aasm'
 gem "bcrypt-ruby", :version => '2.1.2', :lib => 'bcrypt'
 gem "configatron", :version => '2.5.1'
-gem "thoughtbot-factory_girl", :version => '1.2.2', :lib => "factory_girl", :source => "http://gems.github.com"
-gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
-gem 'haml', :version => '2.2.6'
+gem "factory_girl", :version => '1.2.3', :lib => "factory_girl", :source => "http://gems.github.com"
+gem 'will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
+gem 'haml', :version => '2.2.9'
 gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
 gem 'nokogiri', :version => '1.3.3'
-gem 'thoughtbot-paperclip', :version => '2.3.1', :source => 'http://gems.github.com', :lib => 'paperclip'
+gem 'paperclip', :version => '2.3.1.1', :source => 'http://gems.github.com', :lib => 'paperclip'
 gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
 
 ## Install Plugins
