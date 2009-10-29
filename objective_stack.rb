@@ -14,17 +14,19 @@ gem "webrat", :lib => false, :version => "0.5.3", :env => :test
 gem 'email_spec', :lib => 'email_spec', :version => "0.3.5", :env => :test
 gem "rcov", :lib => "rcov", :version => '0.9.6', :env => :test
 gem 'shoulda', :lib => 'shoulda', :version => '2.10.2', :env => :test
-gem "factory_girl", :version => '1.2.3', :lib => "factory_girl", :source => "http://gems.github.com", :env => :test
+gem 'objective_spec', :version => '0.3.0', :env => :test
+gem "factory_girl", :version => '1.2.3', :lib => "factory_girl", :source => "http://gemcutter.org", :env => :test
 gem "authlogic", :version => '2.1.2'
-gem 'aasm', :version => '2.1.3', :source => "http://gems.github.com", :lib => 'aasm'
+gem 'aasm', :version => '2.1.3', :source => "http://gemcutter.org", :lib => 'aasm'
 gem "bcrypt-ruby", :version => '2.1.2', :lib => 'bcrypt'
 gem "configatron", :version => '2.5.1'
-gem 'will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
+gem 'will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gemcutter.org'
 gem 'haml', :version => '2.2.9'
 gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
 gem 'nokogiri', :version => '1.3.3'
-gem 'paperclip', :version => '2.3.1.1', :source => 'http://gems.github.com', :lib => 'paperclip'
+gem 'paperclip', :version => '2.3.1.1', :source => 'http://gemcutter.org', :lib => 'paperclip'
 gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
+gem 'bullet', :source => 'http://gemcutter.org'
 
 ## Install Plugins
 plugin 'active_record_tableless', :git => 'git://github.com/robinsp/active_record_tableless.git'
@@ -344,7 +346,7 @@ CODE
 
 # rcov.opts
 file 'spec/rcov.opts', <<-CODE
---exclude "spec/*,gems/*,spec/spec_helper/*"
+--exclude "spec/*,gems/*,spec/support/*"
 --rails
 --sort coverage
 --only-uncovered
@@ -557,8 +559,7 @@ inside('coverage/features') do
   run "echo '*' > .gitignore"
 end
 
-run "mkdir spec/matchers"
-run "touch tmp/.gitignore tmp/cache/.gitignore tmp/pids/.gitignore spec/matchers/.gitignore"
+run "touch tmp/.gitignore tmp/cache/.gitignore tmp/pids/.gitignore"
 run "touch tmp/sessions/.gitignore tmp/sockets/.gitignore log/.gitignore vendor/.gitignore"
 file '.gitignore', <<-END
 .DS_Store
