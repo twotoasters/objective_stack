@@ -14,11 +14,11 @@ gem "webrat", :lib => false, :version => "0.5.3", :env => :test
 gem 'email_spec', :lib => 'email_spec', :version => "0.3.5", :env => :test
 gem "rcov", :lib => "rcov", :version => '0.9.6', :env => :test
 gem 'shoulda', :lib => 'shoulda', :version => '2.10.2', :env => :test
+gem "factory_girl", :version => '1.2.3', :lib => "factory_girl", :source => "http://gems.github.com", :env => :test
 gem "authlogic", :version => '2.1.2'
 gem 'aasm', :version => '2.1.3', :source => "http://gems.github.com", :lib => 'aasm'
 gem "bcrypt-ruby", :version => '2.1.2', :lib => 'bcrypt'
 gem "configatron", :version => '2.5.1'
-gem "factory_girl", :version => '1.2.3', :lib => "factory_girl", :source => "http://gems.github.com"
 gem 'will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
 gem 'haml', :version => '2.2.9'
 gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
@@ -78,6 +78,28 @@ require 'ruby-debug'
 config.after_initialize do
   ActiveMerchant::Billing::Base.mode = :test
   ::GATEWAY = ActiveMerchant::Billing::BogusGateway.new
+end
+
+CODE
+
+## config/environments/development.rb
+append_file 'config/environments/development.rb', <<-CODE
+
+# Initialize Bullet
+config.after_initialize do
+  Bullet.enable = true 
+  Bullet.alert = true
+  Bullet.bullet_logger = true  
+  Bullet.console = true
+  Bullet.growl = true
+  Bullet.rails_logger = true
+  Bullet.disable_browser_cache = true
+end
+
+begin
+  require 'ruby-growl'
+  Bullet.growl = true
+rescue MissingSourceFile
 end
 
 CODE
