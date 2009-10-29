@@ -542,7 +542,6 @@ file '.gitignore', <<-END
 .DS_Store
 tmp/*
 vendor/rails*
-config/database.yml
 log/*
 *.tmproj
 coverage
