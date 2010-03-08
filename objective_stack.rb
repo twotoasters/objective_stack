@@ -1,35 +1,35 @@
 # Objective Stack
-# A Rails template from Objective 3
-# Author: Blake Watters <blake@objective3.com>
-# Objective 3 - We build delightful apps.
-# Web: http://www.objective3.com
-# GitHub: http://github.com/Objective3/objective_stack/tree/master
+# A Rails template from Two Toasters
+# Author: Blake Watters <blake@twotoasters.com>
+# Two Toasters
+# Web: http://www.twotoasters.com
+# GitHub: http://github.com/twotoasters/objective_stack/tree/master
 
 ## Install Gems
 # RSpec & Cucumber
-gem "rspec", :lib => false, :version => "1.2.9", :env => :test
-gem "rspec-rails", :lib => false, :version => "1.2.9", :env => :test
-gem "cucumber", :lib => false, :version => "0.4.3", :env => :test
-gem "webrat", :lib => false, :version => "0.5.3", :env => :test
-gem 'email_spec', :lib => 'email_spec', :version => "0.3.5", :env => :test
-gem "rcov", :lib => "rcov", :version => '0.9.6', :env => :test
-gem 'shoulda', :lib => 'shoulda', :version => '2.10.2', :env => :test
+gem "rspec", :lib => false, :version => "1.3.0", :env => :test
+gem "rspec-rails", :lib => false, :version => "1.3.2", :env => :test
+gem "cucumber", :lib => false, :version => "0.6.3", :env => :cucumber
+gem "capybara", :lib => false, :version => "0.3.5", :env => :cucumber
+gem 'email_spec', :version => "0.6.0", :env => :test
+gem 'email_spec', :version => "0.6.0", :env => :cucumber
+gem "rcov", :version => '0.9.8', :env => :test
+gem 'shoulda', :version => '2.10.3', :env => :test
 gem 'objective_spec', :version => '0.3.0', :env => :test
-gem "factory_girl", :version => '1.2.3', :lib => "factory_girl", :source => "http://gemcutter.org", :env => :test
-gem "authlogic", :version => '2.1.2'
-gem 'aasm', :version => '2.1.3', :source => "http://gemcutter.org", :lib => 'aasm'
+gem "factory_girl", :version => '1.2.3', :env => :test
+gem 'aasm', :version => '2.1.5', :lib => 'aasm'
 gem "bcrypt-ruby", :version => '2.1.2', :lib => 'bcrypt'
 gem "configatron", :version => '2.5.1'
-gem 'will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gemcutter.org'
-gem 'haml', :version => '2.2.9'
-gem 'alexdunae-validates_email_format_of', :version => '1.4', :lib => 'validates_email_format_of'
-gem 'nokogiri', :version => '1.3.3'
-gem 'paperclip', :version => '2.3.1.1', :source => 'http://gemcutter.org', :lib => 'paperclip'
-gem "activemerchant", :lib => 'active_merchant', :version => '1.4.2'
-gem 'bullet', :source => 'http://gemcutter.org'
+gem 'will_paginate', :version => '2.3.12'
+gem 'haml', :version => '2.2.20'
+gem 'validates_email_format_of', :version => '1.4.1'
+gem 'nokogiri', :version => '1.4.1'
+gem 'paperclip', :version => '2.3.1.1'
+gem 'bullet', :version => '1.7.6'
+gem 'resource_controller', :version => '0.6.6'
+gem "authlogic", :version => '2.1.3'
 
 ## Install Plugins
-plugin 'active_record_tableless', :git => 'git://github.com/robinsp/active_record_tableless.git'
 plugin 'custom-err-msg', :git => 'git://github.com/gumayunov/custom-err-msg.git'
 plugin 'acts_as_url_param', :git => 'git://github.com/caring/acts_as_url_param.git'
 plugin 'nulldb', :git => 'git://github.com/Objective3/nulldb.git'
@@ -37,7 +37,6 @@ plugin 'ssl_requirement', :git => 'git://github.com/rails/ssl_requirement.git'
 plugin 'rails_money', :git => 'git://github.com/jerrett/rails_money.git'
 plugin 'seed-fu', :git => 'git://github.com/mbleigh/seed-fu.git'
 plugin 'default_value_for', :git => 'git://github.com/FooBarWidget/default_value_for.git'
-plugin 'resource_controller', :git => 'git://github.com/giraffesoft/resource_controller.git -r deep_nesting'
 
 ## Cleanup boilerplate messiness
 run 'rm public/index.html'
@@ -51,8 +50,8 @@ inside('public/javascripts/') do
   run 'rm effects.js'
   run 'rm prototype.js'
   # Install JQuery
-  run "curl -s -L http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js > jquery.min.js"
-  run "curl -s -L http://jqueryjs.googlecode.com/files/jquery-1.3.2.js > jquery.js"
+  run "curl -s -L http://code.jquery.com/jquery-1.4.2.min.js > jquery.min.js"
+  run "curl -s -L http://code.jquery.com/jquery-1.4.2.js > jquery.js"
 end
 
 ## Initializers
@@ -75,12 +74,6 @@ rake 'gems:install', :sudo => true
 append_file 'config/environments/test.rb', <<-CODE
 
 require 'ruby-debug'
-
-# Initialize Active Merchant
-config.after_initialize do
-  ActiveMerchant::Billing::Base.mode = :test
-  ::GATEWAY = ActiveMerchant::Billing::BogusGateway.new
-end
 
 CODE
 
@@ -109,7 +102,7 @@ CODE
 # TODO - Generate AuthLogic shit
 FileUtils.mkdir_p("#{root}/lib/tasks") unless File.exists?("#{root}/lib/tasks")
 generate 'rspec'
-generate 'cucumber'
+generate 'cucumber --capybara'
 
 run "haml --rails ."
 
@@ -467,9 +460,6 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path(File.join(File.dirname(__FILE__),'..','config','environment'))
 require 'spec/autorun'
 require 'spec/rails'
-
-# Uncomment the next line to use webrat's matchers
-# require 'webrat/integrations/rspec-rails'
 
 # Load the Objective Spec framework
 require 'objective_spec'
